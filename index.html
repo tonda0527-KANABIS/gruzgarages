@@ -1,0 +1,340 @@
+Tady je aktuální celý kód souboru se všemi sekcemi:
+
+```jsx
+import React, { useState, useEffect, useRef } from 'react';
+import { Image } from '@/components/ui/image';
+
+const BASE = 'https://media.base44.com/images/public/6aa85300d32043916ae5ef95';
+const E60_IMG = 'https://media.base44.com/images/public/6aa85300d32043916ae5ef95/b252b4b75_e60.jpg';
+const LADA_IMG = 'https://media.base44.com/images/public/6aa85300d32043916ae5ef95/c0e8dc066_LADA.png';
+const BEZNY_SERVIS_IMG = `${BASE}/12c986775_like.png`;
+const HERO_IMG = `${BASE}/b732a3f7e_prednirozpera.jpg`;
+const MECHANIKA_IMG = `${BASE}/ddccc08b2_e60cigan.jpg`;
+const PRDELKA_IMG = `${BASE}/9ae6f30af_prdelka.jpg`;
+const E36_IMG = `${BASE}/16bcdc158_e36.jpg`;
+const PODVOZEK_IMG = `${BASE}/447e7ca1f_schnilejgolfik.jpg`;
+const MERGLESTI_IMG = `${BASE}/9fdcac02d_merglesti.jpg`;
+const LESTIBAWODVA_IMG = `${BASE}/b47c7af2e_lestibawodva.jpg`;
+
+function SectionHeader({ title, code }) {
+  return (
+    <div className="gruz-section-header">
+      <h1 className="gruz-headline text-3xl md:text-4xl font-black" style={{ color: 'var(--gruz-steel)' }}>
+        {title}
+      </h1>
+      <span className="gruz-telemetry hidden" style={{ color: 'var(--gruz-hazard)' }}>// {code}</span>
+    </div>);
+
+}
+
+function Card({ img, imgAlt, imgPosition, title, children, action }) {
+  return (
+    <div className="gruz-card">
+      {img &&
+        <div className="gruz-card-img">
+          <Image src={img} alt={imgAlt} fittingType="fill" className="w-full h-full" />
+        </div>
+      }
+      <div className="p-6 flex flex-col flex-1 justify-between gap-4">
+        <div>
+          <h3 className="gruz-headline text-xl font-bold mb-2" style={{ color: 'var(--gruz-hazard)' }}>{title}</h3>
+          {children}
+        </div>
+        {action}
+      </div>
+    </div>);
+
+}
+
+export function CrewSection({ onNav }) {
+  return (
+    <div className="gruz-tab-enter">
+      {/* HERO — Engine Room */}
+      <div className="relative w-full overflow-hidden border mb-10" style={{ borderColor: 'var(--gruz-blueprint)', height: 'clamp(280px, 50vh, 460px)' }}>
+        <Image src={HERO_IMG} alt="BMW motor — GRUZ Garage" fittingType="fill" className="w-full h-full" />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(10,10,11,0.4) 0%, rgba(10,10,11,0.85) 100%)' }} />
+        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10">
+          <div className="gruz-telemetry mb-3">
+            <span className="live">[JIČÍNĚVES]</span> <span className="mx-2 hidden">[STATUS: AKTIVNÍ]</span> <span className="hidden">[PROJEKT: BMW_E60]</span>
+          </div>
+          <h1 className="gruz-headline text-4xl md:text-6xl font-black leading-none" style={{ color: 'var(--gruz-steel)' }}>
+            GRUZ<br /><span style={{ color: 'var(--gruz-hazard)' }}>GARAGE</span>
+          </h1>
+          <p className="gruz-mono mt-4 max-w-xl text-sm" style={{ color: 'var(--gruz-dim)' }}>
+            Autoservis v Jičíněvsi, čištění interiéru, lehké úpravy, kvalitní a čistá práce.
+          </p>
+        </div>
+      </div>
+
+      <SectionHeader title="GRUZ CREW" code="VÍTEJTE" />
+      <div className="max-w-3xl">
+        <div className="gruz-card p-8 md:p-10">
+          <h3 className="gruz-headline text-2xl font-bold mb-6" style={{ color: 'var(--gruz-steel)' }}>VÍTEJTE V GRUZ.GARAGE</h3>
+          <ul className="flex flex-col gap-5">
+            {[
+            { c: 'var(--gruz-hazard)', t: 'KOMPLEXNÍ AUTOSERVIS', d: 'Pravidelná údržba, výměny olejů, brzdových destiček a mechanické opravy všeho druhu.' },
+            { c: 'var(--gruz-steel)', t: 'DETAILY & INTERIÉRY', d: 'Profesionální čištění interiéru a renovace/rozleštění zašlých světlometů.' },
+            { c: 'var(--gruz-hazard)', t: 'TUNING & PROJEKTY', d: 'Vizuální i výkonové úpravy aut stavěných pro radost i ostré nasazení.' }].
+            map((i) =>
+            <li key={i.t} className="pl-4" style={{ borderLeft: `3px solid ${i.c}` }}>
+                <strong className="gruz-headline block text-base font-bold mb-1" style={{ color: 'var(--gruz-steel)' }}>{i.t}</strong>
+                <span className="gruz-mono text-sm" style={{ color: 'var(--gruz-dim)' }}>{i.d}</span>
+              </li>
+            )}
+          </ul>
+          <div className="mt-8 pt-6 border-t flex flex-wrap gap-4 justify-between items-center" style={{ borderColor: 'var(--gruz-blueprint)' }}>
+            <span className="gruz-telemetry" style={{ color: 'var(--gruz-hazard)' }}>// JIČÍNĚVES</span>
+            <button className="gruz-btn gruz-btn-hazard" onClick={() => onNav('projekty')}>PROJEKTY →</button>
+          </div>
+        </div>
+      </div>
+    </div>);
+
+}
+
+function SpecOverlay({ title, specs, onClose, gold }) {
+  return (
+    <div className="gruz-spec-overlay">
+      <h3 className="gruz-headline text-lg font-bold pb-2 border-b" style={{ color: 'var(--gruz-steel)', borderColor: 'var(--gruz-blueprint)' }}>
+        {title}
+      </h3>
+      <ul className="flex-1 my-3">
+        {specs.map((s) =>
+        <li key={s[0]} className="flex justify-between py-2 border-b border-dotted text-sm" style={{ borderColor: 'var(--gruz-blueprint)', color: 'var(--gruz-steel)' }}>
+            <span className="gruz-mono text-xs font-bold" style={{ color: gold ? 'var(--gruz-steel)' : 'var(--gruz-hazard)' }}>{s[0]}</span>
+            <span className="gruz-mono text-right">{s[1]}</span>
+          </li>
+        )}
+      </ul>
+      <button className={`gruz-btn ${gold ? 'gruz-btn-outline-hazard' : ''}`} onClick={onClose}>← NÁVRAT</button>
+    </div>);
+
+}
+
+function CarCard({ img, alt, title, desc, specs, gold }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={`gruz-card ${open ? 'specs-active' : ''}`}>
+      <div className="gruz-card-img">
+        <Image src={img} alt={alt} fittingType="fill" className="w-full h-full" />
+      </div>
+      <div className="p-6 flex flex-col flex-1 justify-between gap-4">
+        <div>
+          <h3 className="gruz-headline text-xl font-bold mb-2" style={{ color: gold ? 'var(--gruz-steel)' : 'var(--gruz-hazard)' }}>{title}</h3>
+          <p className="gruz-mono text-sm" style={{ color: 'var(--gruz-dim)' }}>{desc}</p>
+        </div>
+        <button className={`gruz-btn ${gold ? 'gruz-btn-outline-hazard' : ''}`} onClick={() => setOpen(true)}>
+          DETAIL VOZU
+        </button>
+      </div>
+      <SpecOverlay title={`SPEC // ${title}`} specs={specs} onClose={() => setOpen(false)} gold={gold} />
+    </div>);
+
+}
+
+export function ProjectsSection() {
+  return (
+    <div className="gruz-tab-enter">
+      <SectionHeader title="PROJEKTY & VÝSTAVA" code="GRUZ STROJE" />
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <CarCard
+          img={E60_IMG}
+          alt="BMW E60 535d"
+          title="PROJECT E60 535d"
+          desc="Vlajková loď syndikátu. Nekompromisní výkon, custom detaily a silný zátah."
+          specs={[
+          ['MOTOR', '3.0L R6 Biturbo (M57)'],
+          ['VÝKON', '350+ HP // 700+ Nm'],
+          ['POHON', 'Zadní náprava (RWD)'],
+          ['PŘEVODOVKA', 'Automat + xHP Flash'],
+          ['STATUS', 'Daily / Street Weapon']]
+          } />
+        
+        <CarCard
+          img={PRDELKA_IMG}
+          alt="BMW E46ti 316i"
+          title="COMPACT E46ti 316i"
+          desc="Oldschool přístup. Syrová zadokolka postavená pro čistou zábavu na silnici i sněhu."
+          gold
+          specs={[
+          ['MOTOR', '1.8L R4 (N42/N46)'],
+          ['VÝKON', '115 HP (85 kW)'],
+          ['POHON', 'RWD + Zavařenec'],
+          ['PŘEVODOVKA', 'Manuál (5q)'],
+          ['STATUS', 'Drift Missile / Fun car']]
+          } />
+        
+        <CarCard
+          img={E36_IMG}
+          alt="BMW E36 na sněhu"
+          title="E36 SNOW UNIT"
+          desc="Noční jízdy po sněhu. Klasika, která se nebojí zimy ani tmy."
+          specs={[
+          ['MOTOR', 'BMW řadová šestka'],
+          ['POHON', 'Zadokolka (RWD)'],
+          ['PROSTŘEDÍ', 'Sníh / Noc'],
+          ['STATUS', 'Winter Fun Unit']]
+          } />
+
+        <CarCard
+          img={LADA_IMG}
+          alt="Lada — GRUZ Garage"
+          title="LADA LOW UNIT"
+          desc="Only fast, only low. Surová východní klasika s velkým výfukem a postaveným stylem."
+          specs={[
+          ['KAROSERIE', 'Hatchback'],
+          ['BAREVNÉ LAKOVÁNÍ', 'Satin šedá'],
+          ['VÝFUK', 'Velká custom koncovka'],
+          ['STICKER', 'ONLY FAST ONLY LOW'],
+          ['STATUS', 'Style Unit']]
+          } />
+
+      </div>
+    </div>);
+
+}
+
+export function ServisSection() {
+  return (
+    <div className="gruz-tab-enter">
+      <SectionHeader title="MECHANIKA & SERVIS" code="ÚDRŽBA A DIAGNOSTIKA" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card img={MECHANIKA_IMG} imgAlt="Hluboká mechanika" title="MECHANIKA">
+          <p className="gruz-mono text-sm" style={{ color: 'var(--gruz-dim)' }}>
+            {'> Výměny spolek a převodovek'}<br />
+            {'> Řešení složitějších závad'}
+          </p>
+        </Card>
+        <Card img={BEZNY_SERVIS_IMG} imgAlt="Běžný servis — svíčky a filtry" title="BĚŽNÝ SERVIS">
+          <p className="gruz-mono text-sm" style={{ color: 'var(--gruz-dim)' }}>
+            {'> Oleje a provozní kapaliny'}<br />
+            {'> Brzdové soustavy a filtry'}
+          </p>
+        </Card>
+        <Card img={PODVOZEK_IMG} imgAlt="Podvozek" title="PODVOZEK">
+          <p className="gruz-mono text-sm" style={{ color: 'var(--gruz-dim)' }}>
+            {'> Kontrola a výměna dílů'}<br />
+            {'> Svařování a vyztužování'}
+          </p>
+        </Card>
+      </div>
+    </div>);
+
+}
+
+export function UpravySection() {
+  return (
+    <div className="gruz-tab-enter">
+      <SectionHeader title="PERFORMANCE ÚPRAVY" code="TUNING & EXHAUST" />
+      <div className="max-w-2xl">
+        <Card img={HERO_IMG} imgAlt="Výztuhy a handling" title="VÝZTUHY & HANDLING">
+          <p className="gruz-mono text-sm mb-4" style={{ color: 'var(--gruz-dim)' }}>
+            Instalace rozpěr, stavitelných podvozků a geometrie.
+          </p>
+          <button className="gruz-btn gruz-btn-outline-hazard self-start">ZJISTIT VÍCE</button>
+        </Card>
+      </div>
+    </div>);
+
+}
+
+export function LesteniSection() {
+  return (
+    <div className="gruz-tab-enter">
+      <SectionHeader title="DETAILING LAKU" code="ZRCADLOVÝ LESK" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card img={MERGLESTI_IMG} imgAlt="Keramika" title="KERAMIKA & OCHRANA">
+          <p className="gruz-mono text-sm" style={{ color: 'var(--gruz-dim)' }}>Odolná nano-keramika pro extrémní odtok vody a ochranu laku.</p>
+        </Card>
+        <Card img={LESTIBAWODVA_IMG} imgAlt="Renovace světel" title="SVĚTLA & SKLA">
+          <p className="gruz-mono text-sm" style={{ color: 'var(--gruz-dim)' }}>Rozleštění zažloutlých světel pro čistý vzhled a bezpečné svícení.</p>
+        </Card>
+      </div>
+    </div>);
+
+}
+
+export function LakovnaSection() {
+  return (
+    <div className="gruz-tab-enter">
+      <SectionHeader title="LAKOVACÍ BOX" code="PAINTJOB LAB" />
+      <div className="border border-dashed p-16 text-center" style={{ borderColor: 'var(--gruz-blueprint)', background: '#0E0E11' }}>
+        <h2 className="gruz-headline text-2xl md:text-3xl font-black" style={{ color: 'var(--gruz-hazard)' }}>[ STATUS: VE VÝSTAVBĚ ]</h2>
+        <p className="gruz-mono mt-4 text-sm" style={{ color: 'var(--gruz-dim)' }}>Připravujeme lakovací box.</p>
+        <div className="mt-6 gruz-mono text-lg" style={{ color: 'var(--gruz-steel)' }}>
+          <span className="gruz-blink">_</span> SYSTÉM SE PŘIPRAVUJE
+        </div>
+      </div>
+    </div>);
+
+}
+
+export function KontaktSection() {
+  return (
+    <div className="gruz-tab-enter">
+      <SectionHeader title="SPOJTE SE S NÁMI" code="KONTAKT" />
+      <div className="max-w-3xl">
+        <div className="gruz-card p-8 md:p-10">
+          <h3 className="gruz-headline text-xl font-bold mb-6" style={{ color: 'var(--gruz-steel)' }}>GARÁŽOVÉ KOORDINÁTY & OTEVÍRACÍ DOBA</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="gruz-mono text-sm leading-8">
+              <p><strong style={{ color: 'var(--gruz-hazard)' }}>TEL:</strong> <a href="tel:608607667" style={{ color: 'var(--gruz-steel)' }}>+420 608 607 667</a></p>
+              <p><strong style={{ color: 'var(--gruz-hazard)' }}>MAIL:</strong> <a href="mailto:GRUZGARAGE66@SEZNAM.CZ" style={{ color: 'var(--gruz-steel)' }}>GRUZGARAGE66@SEZNAM.CZ</a></p>
+              <p><strong style={{ color: 'var(--gruz-hazard)' }}>BASE:</strong> <a href="https://mapy.cz/s/gajejatepe" target="_blank" rel="noreferrer" style={{ color: 'var(--gruz-steel)' }}>Jičíněves 507 31</a></p>
+              <p><strong style={{ color: 'var(--gruz-hazard)' }}>IG:</strong> <a href="https://instagram.com" target="_blank" rel="noreferrer" style={{ color: 'var(--gruz-steel)' }}>@GARAGE.GRUZ</a></p>
+            </div>
+            <div className="gruz-mono text-sm leading-8">
+              <p><strong style={{ color: 'var(--gruz-hazard)' }}>OTEVÍRACÍ PROTOKOL:</strong></p>
+              <p>PO–PÁ // 16:00 – 0:00</p>
+              <p>SO // 10:00 – 18:00</p>
+              <p>NE // <span style={{ color: 'var(--gruz-hazard)', fontWeight: 700 }}>OFFLINE</span></p>
+              <a href="tel:608607667" className="gruz-btn gruz-btn-hazard w-full mt-4">ZAVOLAT HNED</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>);
+
+}
+
+export function ForumSection() {
+  const [messages, setMessages] = useState([
+  { name: 'GRUZ_SYS', text: 'Underground chat.', time: '00:00' }]
+  );
+  const [name, setName] = useState('');
+  const [text, setText] = useState('');
+  const boxRef = useRef(null);
+
+  useEffect(() => {
+    if (boxRef.current) boxRef.current.scrollTop = boxRef.current.scrollHeight;
+  }, [messages]);
+
+  const submit = (e) => {
+    e.preventDefault();
+    if (!name.trim() || !text.trim()) return;
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    setMessages((m) => [...m, { name: name.trim(), text: text.trim(), time }]);
+    setText('');
+  };
+
+  return (
+    <div className="gruz-tab-enter">
+      <SectionHeader title="UNDERGROUND CHAT" code="KOMUNITNÍ KECÁRNA" />
+      <div className="gruz-card max-w-3xl h-[480px] flex flex-col p-5">
+        <div ref={boxRef} className="flex-1 overflow-y-auto gruz-scroll flex flex-col gap-2 mb-4 pb-4 border-b" style={{ borderColor: 'var(--gruz-blueprint)' }}>
+          {messages.map((m, i) =>
+          <div key={i} className="px-3 py-2 text-xs gruz-mono" style={{ background: 'rgba(255,255,255,0.02)', borderLeft: '2px solid var(--gruz-hazard)' }}>
+              <span style={{ color: 'var(--gruz-hazard)', fontWeight: 700 }}>[{m.time}] {m.name}:</span>{' '}
+              <span style={{ color: 'var(--gruz-steel)' }}>{m.text}</span>
+            </div>
+          )}
+        </div>
+        <form onSubmit={submit} className="flex gap-2 flex-wrap">
+          <input className="gruz-input" style={{ width: 140 }} placeholder="TVOJE JMÉNO..." maxLength={25} value={name} onChange={(e) => setName(e.target.value)} />
+          <input className="gruz-input flex-1" style={{ minWidth: 180 }} placeholder="..." value={text} onChange={(e) => setText(e.target.value)} />
+          <button type="submit" className="gruz-btn gruz-btn-hazard">ODESLAT</button>
+        </form>
+      </div>
+    </div>);
+
+}
